@@ -16,3 +16,6 @@ src/.idea/src.iml
 src/.idea/vcs.xml
 data/temp.arff
 src_java/L2A/pom.xml
+src_java/L2A/target/classes/L2A_classification.class
+src_java/L2A/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+*.lst

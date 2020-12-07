@@ -7,7 +7,7 @@ While most of the existing Named Entity Recognition (NER) systems make use of ge
 
 ## 1 Usage
 
-L2AWE is written in Python 3.8 and Java (JDK 14), requirements are in the respective folders.
+L2AWE is written in Python 3.8 and Java, requirements are in the respective folders.
 
 (lines starting with '$' denote command line input)
 

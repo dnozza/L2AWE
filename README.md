@@ -1,9 +1,13 @@
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+
 # L2AWE (LearningToAdapt with Word Embeddings)
 
 While most of the existing Named Entity Recognition (NER) systems make use of generic entity type classification schemas, the comparison and integration of different entity types among different NER systems is a complex problem even for human experts.
 **L2AWE** (Learning To Adapt with Word Embeddings) aims at adapting a NER system trained on a source classification schema to a given target one.
 
 ## 1 Usage
+
+L2AWE is written in Python 3.8 and Java (JDK 14), requirements are in the respective folders.
 
 (lines starting with '$' denote command line input)
 

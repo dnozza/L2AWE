@@ -46,12 +46,18 @@ L2AWE provides two output files:
 ## 4 Examples
 
 `$python main.py -i "../data/data_example.tsv"`
+
 Run L2AWE on the input example file with default parameters
 
 
 `$python main.py -i "../data/data_example.tsv" -o "../output/" -f 3`
+
 Run L2AWE on the input example file, save results in the output folder of a 3-fold cross-validation evaluation
 
 
 `$python main.py -i "../data/data_example.tsv" -w "GoogleNews-vectors-negative300.bin.gz"`
+
 Run L2AWE on the input example file and add the word embedding representation of input entities with GoogleNews Word2Vec embeddings (please note that embeddings should be downloaded in advance)
+
+
+[![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0)

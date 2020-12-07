@@ -1,5 +1,8 @@
+import weka.core.Attribute;
 import weka.core.Instances;
 import weka.core.SelectedTag;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.NumericToNominal;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.meta.FilteredClassifier;
@@ -26,27 +29,19 @@ import java.io.IOException;
 
 public class L2A_classification {
 
-	static Integer n_fold = 5;
-
 	public static void main(String[] args) throws Exception {
+			
+		String path_input = args[0];
+		String path_output = args[1];
+		Integer n_fold = Integer.parseInt(args[2]);
 		
-		String path_input = "";
-		String path_output = "";
-
-		ArgumentParser parser = ArgumentParsers.newFor("Checksum").build().defaultHelp(true)
-				.description("Calculate checksum of given files.");
+		System.out.println("PATH INPUT:" + path_input);
+		System.out.println("PATH OUTPUT:" + path_output);
 		
-		parser.addArgument("-path_input", "--i").help("path of input file").action(storeTrue());
-		parser.addArgument("-path_output", "--o").help("path of output file").action(storeTrue());
-		
-		Namespace res;
-		try {
-            res = parser.parseArgs(args);
-            System.out.println(res);
-        } catch (ArgumentParserException e) {
-            parser.handleError(e);
-            System.exit(1);
-        }
+		 File directory = new File(path_output);
+		    if (! directory.exists()){
+		        directory.mkdir();
+		    }
 		
 
 		// 1. INITIALIZE CLASSIFIERS
@@ -63,17 +58,18 @@ public class L2A_classification {
 		for (int i = 0; i < classifiers.length; i++) {
 
 			// 2. SET OUTPUT FOLDER
-			
-			path_output = path_output + "/performance.csv";
 
 			String path_prediction = path_output + "/prediction.csv";
+			path_output = path_output + "/performance.csv";
+
 
 			File file = new File(path_output);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
+			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), false));
-			String header = "ML Model" + ";" + "Representation Model" + ";" + "Classifier" + ";" + "Accuracy" + ";"
+			String header = "ML Model" + ";" + "Accuracy" + ";"
 					+ "Precision" + ";" + "Recall" + ";" + "F-measure" + "\n";
 			bw.write(header);
 			bw.flush();
@@ -87,7 +83,7 @@ public class L2A_classification {
 			System.out.println("CLASSIFIER " + c_name);
 			System.out.println("SAVING RESULTS " + path_output);
 
-			classification(path_input, path_prediction, c, c_name, bw);
+			classification(path_input, path_prediction, c, c_name, n_fold, bw);
 
 			bw.flush();
 
@@ -97,7 +93,7 @@ public class L2A_classification {
 
 	}
 
-	public static void classification(String path_arff, String path_prediction, Classifier c, String c_name,
+	public static void classification(String path_arff, String path_prediction, Classifier c, String c_name, Integer n_fold,
 			BufferedWriter bw) throws Exception {
 
 		System.out.println("Read Data");
@@ -105,10 +101,7 @@ public class L2A_classification {
 		Instances train = readData(path_arff);
 		train.setClassIndex(train.numAttributes() - 1);
 
-		FilteredClassifier fc = new FilteredClassifier();
-		fc.setClassifier(c);
-
-		classifyCV(train, path_prediction, n_fold, fc, c_name, bw, false);
+		classifyCV(train, path_prediction, n_fold, c, c_name, bw, true);
 
 	}
 
@@ -125,10 +118,9 @@ public class L2A_classification {
 
 		File file = new File(path_prediction);
 
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		BufferedWriter bw_pred = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), false));
+		//BufferedWriter bw_pred = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), false));
+		BufferedWriter bw_pred = new BufferedWriter(new FileWriter(path_prediction, false));
+				
 		bw_pred.write(predsBuffer.toString());
 		bw_pred.flush();
 		bw_pred.close();
